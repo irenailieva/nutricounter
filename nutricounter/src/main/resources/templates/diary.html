@@ -1,0 +1,28 @@
+<th:block th:if="${displayProfileEditAlert} == true">
+    <th:block th:replace="~{fragments/alerts/profile-edit-alert}"/>
+</th:block>
+
+<th:block th:if="${displayCustomFoodCreateSuccess} == true">
+    <th:block th:replace="~{fragments/alerts/custom-food-create-alert}"/>
+</th:block>
+
+<th:block th:if="${displayGlobalFoodCreateSuccess} == true">
+    <th:block th:replace="~{fragments/alerts/global-food-create-alert}"/>
+</th:block>
+
+<div class="container">
+    <div class="text-center my-4">
+        <h2 th:text="|Hello, ${username}!|"></h2>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="btn btn-primary mr-1">Add Food</div>
+        <div class="btn btn-outline-warning">Clear Day</div>
+    </div>
+
+        <div th:each="entry : ${diaryEntries}" th:object="${entry}">
+            <div class="row col-sm-5 justify-content-center mx-auto">
+                <p th:text="|*{name}"></p>
+            </div>
+        </div>
+</div>

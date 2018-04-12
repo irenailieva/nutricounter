@@ -1,0 +1,27 @@
+<script th:src="@{/scripts/recipes.js}"></script>
+<div class="container mt-4 mb-4">
+    <h3 id="title">Create Your Custom Recipe</h3>
+    <hr/>
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-sm-5">
+            <button type="submit" class="btn btn-lg btn-block btn-dark mb-3" onclick="sendCreateRecipeDetails()">Create Recipe</button>
+            <input id="recipeName" type="text" class="form-control mb-2" placeholder="Recipe Name"/>
+
+            <div id="addedFoodsUnorderedList" class="list-group" role="tablist" style="overflow-y: scroll; max-height: 400px;">
+            </div>
+
+        </div>
+        <div class="col-sm-6">
+
+            <div class="mb-2">
+                <input id="searchBox" class="form-control" placeholder="Search Foods"/>
+            </div>
+
+            <div id="foodResultsUnorderedList" class="list-group" role="tablist" style="overflow-y: scroll; max-height: 400px; border: #3f3d3b">
+            </div>
+
+        </div>
+    </div>
+</div>
+

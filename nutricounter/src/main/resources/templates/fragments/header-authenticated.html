@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Nutricounter</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form sec:authorize="hasRole('ADMIN', 'CHIEF ADMIN')" class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search Users">
+            <button class="btn btn-dark my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarFoods" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Foods
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarFoods">
+                    <a sec:authorize="hasAnyRole('ADMIN', 'CHIEF ADMIN')" class="dropdown-item" href="/foods/add/global">Add Global</a>
+                    <a class="dropdown-item" href="/foods/add/custom">Add Custom</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/recipes/add">Add Recipe</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    th:text="${#authentication.getPrincipal().getUsername()}">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarFoods">
+                    <a class="dropdown-item" href="/diary">Diary</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/edit-profile">Edit Profile</a>
+                    <!--<div class="dropdown-divider"></div>-->
+                    <!--<div class="dropdown-item">-->
+                        <!--<form th:action="@{/logout}" th:method="POST">-->
+                            <!--<button type="submit" class="nav-link" style="background: #E95420; border-width: 0; cursor: pointer; outline: 0">Logout</button>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                </div>
+            </li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" th:method="POST">
+                    <button type="submit" class="nav-link" style="background: #E95420; border-width: 0; cursor: pointer; outline: 0">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>

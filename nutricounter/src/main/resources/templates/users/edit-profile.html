@@ -1,0 +1,65 @@
+<div class="container text-center mt-4 mb-4">
+
+    <h3 class="text-center mt-3">Edit Your Profile Details</h3>
+
+    <form action="/edit-profile" method="POST" class="mt-3" th:object="${profileEditModel}">
+
+            <div class="col-sm-5 mx-auto pl-0">
+                <div class="section text-center">
+                    <h5 class="mb-3">Body Type</h5>
+                    <hr/>
+                    <fieldset class="form-group mx-auto">
+                        <div class="row mx-auto">
+                            <label for="gender" class="col-sm-2 col-form-label">Sex:</label>
+                            <div class="ml-3 my-auto" id="gender">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="male" name="gender" value="Male" class="custom-control-input" th:checked="*{gender == 'Male'}">
+                                    <label class="custom-control-label" for="male">Male</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="female" name="gender" value="Female" class="custom-control-input" th:checked="*{gender == 'Female'}">
+                                    <label class="custom-control-label" for="female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group row mx-auto">
+                        <label for="date" class="col-sm-2 col-form-label">Born:</label>
+                        <div class="col-sm-10 mx-auto">
+                            <input class="form-control" th:classappend="${#fields.hasErrors('date')}? 'is-invalid'" type="date" name="date" id="date" th:field="*{date}">
+                            <small id="dateHelp" class="invalid-feedback"
+                                   th:each="error : ${#fields.errors('date')}" th:text="${error}">Error Message
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row mx-auto">
+                        <label for="height" class="col-sm-2 col-form-label">Height:</label>
+                        <div class="col-sm-10 mx-auto">
+                            <input class="form-control" th:classappend="${#fields.hasErrors('height')}? 'is-invalid'" type="text" name="height" id="height" placeholder="cm" th:field="*{height}">
+                            <small id="heightHelp" class="invalid-feedback"
+                                   th:each="error : ${#fields.errors('height')}" th:text="${error}">Error Message
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row mx-auto">
+                        <label for="weight" class="col-sm-2 col-form-label">Weight:</label>
+                        <div class="col-sm-10 mx-auto">
+                            <input class="form-control" th:classappend="${#fields.hasErrors('weight')}? 'is-invalid'" type="text" name="weight" id="weight" placeholder="kg" th:field="*{weight}">
+                            <small id="weightHelp" class="invalid-feedback"
+                                   th:each="error : ${#fields.errors('weight')}" th:text="${error}">
+                                Error Message
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <input type="hidden"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}"/>
+
+        <div class="row text-center mx-auto mt-3">
+            <input type="submit" class="btn btn-dark mx-auto" value="Save Changes">
+        </div>
+    </form>
+</div>

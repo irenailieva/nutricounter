@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Nutricounter</title>
+    <link rel="icon" href="/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/styles/sticky-footer.css"/>
+</head>
+
+<body>
+
+<header sec:authorize="isAnonymous()" th:include="~{fragments/header-anonymous}"></header>
+<header sec:authorize="isAuthenticated()" th:include="~{fragments/header-authenticated}"></header>
+
+<main>
+    <span th:include="~{fragments/script-bundle}"></span>
+
+    <th:block th:if="${displayLoginSuccessAlert} == true">
+        <th:block th:replace="~{fragments/alerts/successful-login-alert}"/>
+    </th:block>
+
+    <th:block th:include="${view}">
+    </th:block>
+
+</main>
+
+<!--<footer th:include="fragments/footer"></footer>-->
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+<div class="container">
+    <div th:each="customFood : ${userCustomFoods}" th:object="${customFood}">
+        <p th:text="*{name}"></p>
+    </div>
+</div>
