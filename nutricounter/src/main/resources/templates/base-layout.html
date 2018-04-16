@@ -15,12 +15,12 @@
 </head>
 
 <body>
+<span th:include="~{fragments/script-bundle}"></span>
 
 <header sec:authorize="isAnonymous()" th:include="~{fragments/header-anonymous}"></header>
 <header sec:authorize="isAuthenticated()" th:include="~{fragments/header-authenticated}"></header>
 
 <main>
-    <span th:include="~{fragments/script-bundle}"></span>
 
     <th:block th:if="${displayLoginSuccessAlert} == true">
         <th:block th:replace="~{fragments/alerts/successful-login-alert}"/>
@@ -31,7 +31,7 @@
 
 </main>
 
-<!--<footer th:include="fragments/footer"></footer>-->
+<footer th:include="fragments/footer"></footer>
 
 </body>
 </html>

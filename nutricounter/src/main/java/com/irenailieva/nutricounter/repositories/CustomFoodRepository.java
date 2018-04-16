@@ -16,4 +16,6 @@ public interface CustomFoodRepository extends JpaRepository<CustomFood, Long> {
     List<CustomFood> findAllByUserAndName(@Param("user") User user, @Param("name") String name);
 
     List<CustomFood> findAllByUser(User user);
+
+    int countAllByUser(User user);
 }

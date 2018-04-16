@@ -3,6 +3,7 @@ package com.irenailieva.nutricounter.services.implementations;
 import com.irenailieva.nutricounter.entities.*;
 import com.irenailieva.nutricounter.models.create.FoodCreateModel;
 import com.irenailieva.nutricounter.models.create.RecipeCreateModel;
+import com.irenailieva.nutricounter.models.view.UserViewModel;
 import com.irenailieva.nutricounter.repositories.CustomFoodRepository;
 import com.irenailieva.nutricounter.repositories.EdibleRepository;
 import com.irenailieva.nutricounter.repositories.GlobalFoodRepository;
@@ -94,8 +95,16 @@ public class FoodServiceImpl implements FoodService {
         return foodSearchResult.subList(0, 20);
     }
 
+    @Override
     public List<CustomFood> findAllUserCustomFoods(String username) {
         User user = this.userService.findByUsername(username);
         return this.customFoodRepository.findAllByUser(user);
+    }
+
+    @Override
+    public void setFoodCount(UserViewModel userViewModel, User user) {
+        userViewModel.setCustomFoodCount(this.customFoodRepository.countAllByUser(user));
+        userViewModel.setGlobalFoodCount(this.globalFoodRepository.countAllByUser(user));
+        userViewModel.setRecipeCount(this.recipeRepository.countAllByUser(user));
     }
 }

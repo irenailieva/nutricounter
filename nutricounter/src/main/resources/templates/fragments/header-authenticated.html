@@ -5,10 +5,13 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form sec:authorize="hasRole('ADMIN', 'CHIEF ADMIN')" class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search Users">
-            <button class="btn btn-dark my-2 my-sm-0" type="submit">Search</button>
-        </form>
+
+        <div sec:authorize="hasAnyRole('ADMIN', 'CHIEF ADMIN')" class="nav-item dropdown">
+            <input id="userSearchBox" class="form-control mr-sm-2" placeholder="Search By Username">
+            <div id="foundUsersDropdown" class="dropdown-menu" aria-labelledby="navbarFoods">
+            </div>
+        </div>
+
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarFoods" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

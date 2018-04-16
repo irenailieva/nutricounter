@@ -1,6 +1,6 @@
 $(document).ready(function () {
     loadFirstJSONFoods();
-    $('#searchBox').on('input', search)
+    $('#foodSearchBox').on('input', searchFoods)
 });
 
 function loadFirstJSONFoods() {
@@ -17,10 +17,6 @@ function loadFirstJSONFoods() {
 }
 
 function loadFoundFoodsInDOM(foods) {
-
-    $.each(foods, function(i, food) {
-        console.log(food.name);
-    });
 
     $('#foodResultsUnorderedList').empty();
     $.each(foods, function(i, food) {
@@ -64,22 +60,17 @@ function addFoodFromSearchToRecipe(foodId) {
 
 }
 
-function search() {
-    let searchWord = $('#searchBox').val();
+function searchFoods() {
+    let searchWord = $('#foodSearchBox').val();
     let username = $('#navbarUser').text();
     $.ajax({
         type: 'GET',
         url: '/foods/search',
-        data: {
-            searchWord: searchWord,
-            username: username
-        },
+        data: {searchWord: searchWord, username: username},
         contentType: 'application/json',
         success: foundFoods => loadFoundFoodsInDOM(foundFoods)
     })
 }
-
-
 
 function sendCreateRecipeDetails() {
 

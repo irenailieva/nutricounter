@@ -16,4 +16,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findAllByUserAndName(@Param("user") User user, @Param("name") String name);
 
     List<Recipe> findAllByUser(User user);
+
+    int countAllByUser(User user);
 }

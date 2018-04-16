@@ -17,6 +17,14 @@ public abstract class BaseController {
         return modelAndView;
     }
 
+    protected ModelAndView view(String viewName, String attributeName, Object attribute, String attributeName2, Object attribute2) {
+        ModelAndView modelAndView = new ModelAndView("base-layout");
+        modelAndView.addObject("view", viewName);
+        modelAndView.addObject(attributeName, attribute);
+        modelAndView.addObject(attributeName2, attribute2);
+        return modelAndView;
+    }
+
     protected ModelAndView redirect(String url) {
         return new ModelAndView("redirect:" + url);
     }

@@ -1,8 +1,63 @@
-<div class="jumbotron">
-    <div th:text="${#authentication.getPrincipal().getUsername()}">
-    </div>
+<th:block th:if="${displayAdminPrivilegesGrantedSuccess} == true">
+    <th:block th:replace="~{fragments/alerts/admin-privileges-granted-alert}"/>
+</th:block>
 
-    <div th:each="${}">
-    </div>
+<th:block th:if="${displayAdminPrivilegesRevokedSuccess} == true">
+    <th:block th:replace="~{fragments/alerts/admin-privileges-revoked-alert}"/>
+</th:block>
 
+<th:block th:if="${displayUserIsAlreadyAdmin} == true">
+    <th:block th:replace="~{fragments/alerts/user-already-admin-alert}"/>
+</th:block>
+
+<th:block th:if="${displayUserNotAdmin} == true">
+    <th:block th:replace="~{fragments/alerts/user-not-admin-alert}"/>
+</th:block>
+
+<div class="container custom-container mt-4 justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-sm-7">
+    <div class="jumbotron">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="h4" th:text="|User Details: ${user.username}|">
+                </div>
+                <th:block th:each="role : ${user.roles}">
+            <span th:classappend="|${role == 'USER' ? 'badge-secondary' : ''} ${role == 'ADMIN' ? 'badge-primary' : ''} ${role == 'CHIEF ADMIN' ? 'badge-dark' : ''}|"
+                  class="badge" th:text="${role}"></span>
+                </th:block>
+                <hr/>
+                <div class="my-3">
+                    <div class="row col-sm-8" th:text="|Username: ${user.username}|">
+                    </div>
+                    <br/>
+                    <div class="row col-sm-8" th:text="|Global Foods: ${user.globalFoodCount}|">
+                    </div>
+                    <div class="row col-sm-8" th:text="|Custom Foods: ${user.customFoodCount}|">
+                    </div>
+                    <div class="row col-sm-8" th:text="|Recipes: ${user.recipeCount}|">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <form th:action="@{/role/grant/} + ${user.username}" method="post">
+                    <button type="submit" th:attr="disabled=${#lists.contains(user.roles, 'ADMIN')} ? 'disabled'" class="btn btn-success mb-1" sec:authorize="hasAnyRole('ADMIN', 'CHIEF ADMIN')">
+                        Grant Admin Status
+                    </button>
+                </form>
+
+                <form th:action="@{/role/revoke/} + ${user.username}" method="post">
+                    <button type="submit" th:attr="disabled=${!#lists.contains(user.roles, 'ADMIN')} ? 'disabled'" class="btn btn-danger mb-1" sec:authorize="hasAnyRole('ADMIN', 'CHIEF ADMIN')">
+                        Revoke Admin Status
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+        </div>
+    </div>
 </div>

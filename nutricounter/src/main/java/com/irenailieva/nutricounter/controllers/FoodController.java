@@ -77,8 +77,8 @@ public class FoodController extends BaseController {
 
     @ResponseBody
     @GetMapping("/search")
-    public ResponseEntity<List<Edible>> search(@RequestParam("searchWord") String foodName, @RequestParam("username") String username) {
-        List<Edible> foundFoods = this.foodService.findFoodsByUserAndName(username, foodName);
+    public ResponseEntity<List<Edible>> search(@RequestParam("searchWord") String searchWord, @RequestParam("username") String username) {
+        List<Edible> foundFoods = this.foodService.findFoodsByUserAndName(username, searchWord);
         return new ResponseEntity<>(foundFoods, HttpStatus.OK);
     }
 }
