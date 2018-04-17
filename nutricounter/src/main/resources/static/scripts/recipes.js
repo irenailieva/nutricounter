@@ -55,6 +55,9 @@ function addFoodFromSearchToRecipe(foodId) {
     foodElementToAdd.find('div.form-group.col-sm-4.mb-0').addClass('col-sm-5').removeClass('col-sm-4');
     foodElementToAdd.find('button').text('-').removeAttr('onclick').attr('onclick', 'removeFoodFromRecipe(\'' + foodId + '\')');
     foodElementToAdd.removeClass('active').removeClass('show');
+    let amount = foodElementToAdd.find('#amount').val();
+    console.log(amount);
+    foodElementToAdd.append($('<input type="hidden"/>').attr('name', foodId).attr('value', amount));
 
     $('#addedFoodsUnorderedList').prepend(foodElementToAdd);
 
@@ -74,24 +77,10 @@ function searchFoods() {
 
 function sendCreateRecipeDetails() {
 
-    let recipe = {};
-    recipe.name = $('#recipeName').val();
-    recipe.foodIdsAndGrams = {};
-    let foodsAndAmounts = recipe.foodIdsAndGrams;
+    let recipeCreateForm = $('#recipeCreateForm');
+    let recipeData = JSON.stringify(recipeCreateForm.serializeArray());
+    recipeCreateForm.append($('<input type="hidden" id="recipeData" name="recipeDataJSON"/>').attr('value', recipeData));
+    console.log(recipeData);
 
-    $.each($('#addedFoodsUnorderedList'), function (i, child) {
-        let foodId = $(child).attr('foodId');
-        let amount = $(child).find('input').val();
-        foodsAndAmounts.foodId = foodId;
-        foodsAndAmounts.amount = amount;
-    });
-
-    $.ajax({
-        type: 'POST',
-        url: '/recipes/add',
-        data: JSON.stringify(recipe),
-        success: function (foundFoods) {
-            loadFoundFoodsInDOM(foundFoods);
-        }
-    });
+    console.log('executed');
 }

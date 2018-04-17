@@ -2,7 +2,7 @@ package com.irenailieva.nutricounter.services.implementations;
 
 import com.irenailieva.nutricounter.entities.*;
 import com.irenailieva.nutricounter.models.create.FoodCreateModel;
-import com.irenailieva.nutricounter.models.create.RecipeCreateModel;
+import com.irenailieva.nutricounter.models.create.RecipeJSONModel;
 import com.irenailieva.nutricounter.models.view.UserViewModel;
 import com.irenailieva.nutricounter.repositories.CustomFoodRepository;
 import com.irenailieva.nutricounter.repositories.EdibleRepository;
@@ -50,7 +50,7 @@ public class FoodServiceImpl implements FoodService {
         this.edibleRepository.saveAndFlush(customFood);
     }
 
-    public void createRecipe(RecipeCreateModel recipeCreateModel, String username) {
+    public void createRecipe(RecipeJSONModel recipeJSONModel, String username) {
 
     }
 

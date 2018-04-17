@@ -4,11 +4,18 @@
 
     <div class="row justify-content-center mt-3" style="height: 500px">
         <div class="col-sm-5">
-            <button type="submit" class="btn btn-lg btn-block btn-dark mb-3" onclick="sendCreateRecipeDetails()">Create Recipe</button>
-            <input id="recipeName" type="text" class="form-control mb-2" placeholder="Recipe Name"/>
 
-            <div id="addedFoodsUnorderedList" class="list-group" role="tablist" style="overflow-y: scroll; max-height: 400px;">
-            </div>
+            <form id="recipeCreateForm" action="/recipes/add" method="post">
+                <button onclick="sendCreateRecipeDetails()" type="submit" class="btn btn-lg btn-block btn-dark mb-3">Create Recipe</button>
+                <input id="recipeName" name="recipeName" type="text" class="form-control mb-2" placeholder="Recipe Name"/>
+
+                <div id="addedFoodsUnorderedList" class="list-group" role="tablist" style="overflow-y: scroll; max-height: 400px;">
+                </div>
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"/>
+            </form>
 
         </div>
         <div class="col-sm-6">

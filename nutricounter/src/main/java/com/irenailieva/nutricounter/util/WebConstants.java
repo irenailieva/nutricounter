@@ -25,6 +25,7 @@ public class WebConstants {
     public static final String ALREADY_EXISTING_USERNAME_MESSAGE = "Sorry, that username is already taken.";
 
     public static final String EMPTY_FOOD_NAME_MESSAGE = "Food name cannot be empty!";
+    public static final String EMPTY_RECIPE_NAME_MESSAGE = "Recipe name cannot be empty!";
 
     //Regex validation
     public static final String VALID_DATE_REGEX = "[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}";
