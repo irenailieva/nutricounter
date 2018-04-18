@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <div sec:authorize="hasAnyRole('ADMIN', 'CHIEF ADMIN')" class="nav-item dropdown">
-            <input id="userSearchBox" class="form-control mr-sm-2" placeholder="Search By Username">
+            <input id="userSearchBox" class="form-control mr-sm-2" placeholder="Search Users">
             <div id="foundUsersDropdown" class="dropdown-menu" aria-labelledby="navbarFoods">
             </div>
         </div>
@@ -30,14 +30,9 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarFoods">
                     <a class="dropdown-item" href="/diary">Diary</a>
+                    <a class="dropdown-item" href="/diary/history">Diary History</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/edit-profile">Edit Profile</a>
-                    <!--<div class="dropdown-divider"></div>-->
-                    <!--<div class="dropdown-item">-->
-                        <!--<form th:action="@{/logout}" th:method="POST">-->
-                            <!--<button type="submit" class="nav-link" style="background: #E95420; border-width: 0; cursor: pointer; outline: 0">Logout</button>-->
-                        <!--</form>-->
-                    <!--</div>-->
                 </div>
             </li>
             <li class="nav-item">

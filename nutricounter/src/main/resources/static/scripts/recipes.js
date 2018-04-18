@@ -75,12 +75,29 @@ function searchFoods() {
     })
 }
 
-function sendCreateRecipeDetails() {
+function appendCreateRecipeDetails() {
 
     let recipeCreateForm = $('#recipeCreateForm');
     let recipeData = JSON.stringify(recipeCreateForm.serializeArray());
     recipeCreateForm.append($('<input type="hidden" id="recipeData" name="recipeDataJSON"/>').attr('value', recipeData));
-    console.log(recipeData);
+    //console.log(recipeData);
 
-    console.log('executed');
+    //console.log('executed');
+}
+
+function validateRecipeCreateForm() {
+
+    let recipeNameInput = $('#recipeName');
+
+    if (recipeNameInput.val() === '') {
+
+        if (!recipeNameInput.hasClass('is-invalid')) {
+            recipeNameInput.addClass('is-invalid');
+        }
+
+        $('#recipeNameHelp').text('Recipe name cannot be empty!');
+        console.log($('#recipeNameHelp').text());
+
+        return false;
+    }
 }

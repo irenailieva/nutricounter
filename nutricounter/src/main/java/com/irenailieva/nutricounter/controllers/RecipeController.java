@@ -7,14 +7,20 @@ import com.irenailieva.nutricounter.services.interfaces.RecipeService;
 import com.irenailieva.nutricounter.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
+@Controller
 @RequestMapping("/recipes")
-@RestController
 public class RecipeController extends BaseController {
 
     private final RecipeService recipeService;
@@ -27,21 +33,17 @@ public class RecipeController extends BaseController {
     }
 
     @GetMapping("/add")
-    public ModelAndView createRecipe(RecipeJSONModel recipeJSONModel) {
+    public ModelAndView createRecipe(@ModelAttribute RecipeJSONModel recipeJSONModel) {
         return super.view("foods/add-recipe");
     }
 
-    @ResponseBody
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView createRecipeConfirm(RecipeJSONModel recipeJSONModel, Principal principal, RedirectAttributes redirectAttributes) {
-        System.out.println("RECIPE BITCH");
-        System.out.println("RECIPE BITCH");
-        System.out.println("RECIPE BITCH");
-        System.out.println("RECIPE BITCH");
-        System.out.println("RECIPE BITCH");
-        System.out.println("RECIPE BITCH");
-        System.out.println("RECIPE BITCH");
+    public ModelAndView createRecipeConfirm(@Valid RecipeJSONModel recipeJSONModel, BindingResult bindingResult, Principal principal, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            return super.view("foods/add-recipe");
+        }
 
         User user = this.userService.findByUsername(principal.getName());
         this.recipeService.createNewRecipe(recipeJSONModel, user);

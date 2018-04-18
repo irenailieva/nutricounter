@@ -11,8 +11,8 @@ public class DailyIntakeCalculator {
 
     private static final double LIGHT_EXERCISE_MULTIPLIER = 1.375;
 
-    private static final double FEMALE_DAILY_WATER_INTAKE = 2.2;
-    private static final double MALE_DAILY_WATER_INTAKE = 2.9;
+    private static final double FEMALE_DAILY_WATER_INTAKE = 2200;
+    private static final double MALE_DAILY_WATER_INTAKE = 2900;
 
     private static final double VIT_A_DAILY_INTAKE = 3000;
     private static final double VIT_B6_DAILY_INTAKE = 1.3;

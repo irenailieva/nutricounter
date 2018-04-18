@@ -45,6 +45,20 @@ public class DateUtil {
         return today.getTime();
     }
 
+    public static String getDateAsString(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(calendar.get(Calendar.YEAR))
+                .append("/")
+                .append(calendar.get(Calendar.MONTH))
+                .append("/")
+                .append(calendar.get(Calendar.DAY_OF_MONTH));
+
+        return builder.toString();
+    }
+
     private static void setTimeToZero(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);

@@ -25,10 +25,6 @@ public class DiaryEntry {
     @Basic
     private Date date;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "edible_id", referencedColumnName = "id")
-    private Edible edible;
-
     @Basic
-    private double grams;
+    private int completionPercentage;
 }

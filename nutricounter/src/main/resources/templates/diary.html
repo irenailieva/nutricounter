@@ -14,19 +14,205 @@
     <th:block th:replace="~{fragments/alerts/recipe-create-alert}"/>
 </th:block>
 
+<th:block th:if="${displayDiaryEntryAddedSuccess} == true">
+    <th:block th:replace="~{fragments/alerts/diary-entry-create-alert}"/>
+</th:block>
+
 <div class="container custom-container">
     <div class="text-center my-4">
-        <h2 th:text="|Hello, ${username}!|"></h2>
+        <h3 th:text="|Hello, ${username}! This is your nutrition diary.|"></h3>
     </div>
+    <hr/>
 
-    <div class="row justify-content-center">
-        <div class="btn btn-primary mr-1">Add Food</div>
-        <div class="btn btn-outline-warning">Clear Day</div>
-    </div>
 
         <div th:each="entry : ${diaryEntries}" th:object="${entry}">
             <div class="row col-sm-5 justify-content-center mx-auto">
                 <p th:text="|*{name}"></p>
             </div>
         </div>
+
+    <div class="row justify-content-center mt-3" style="height: 500px">
+        <div class="col-sm-5">
+
+            <form id="diaryEntriesCreateForm" action="/diary/save-day" method="post">
+
+                <div class="row mb-3 justify-content-center">
+                    <button onclick="appendTargetsTotalCompletion()" type="submit" class="btn btn-lg btn-block btn-dark col-sm-5 mr-1">Save Day</button>
+                    <div onclick="clearDay()" class="btn btn-lg btn-block btn-warning col-sm-5 my-auto ml-1">Clear Day</div>
+                </div>
+
+                <div id="addedFoodsUnorderedList" class="list-group" role="tablist" style="overflow-y: scroll; max-height: 400px; border: 2px solid #ccc; border-radius: 5px">
+                </div>
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"/>
+            </form>
+
+        </div>
+        <div class="col-sm-6">
+
+            <div class="mb-2">
+                <input id="foodSearchBox" class="form-control" placeholder="Search Foods"/>
+            </div>
+
+            <div id="foodResultsUnorderedList" class="list-group" role="tablist" style="overflow-y: scroll; max-height: 400px; border: 2px solid #ccc; border-radius: 5px">
+            </div>
+
+        </div>
+    </div>
+
+    <hr class="mb-4"/>
+
+    <div class="row justify-content-center">
+        <h4 class="mb-4">Your Targets</h4>
+    </div>
+
+    <div hidden="hidden" th:object="${dailyIntake}">
+        <div id="energyDailyIntake" th:text="*{energy}"></div>
+        <div id="waterDailyIntake" th:text="*{water}"></div>
+        <div id="carbsDailyIntake" th:text="*{carbohydrates}"></div>
+        <div id="proteinDailyIntake" th:text="*{protein}"></div>
+        <div id="fatDailyIntake" th:text="*{fat}"></div>
+        <div id="vitADailyIntake" th:text="*{vitaminA}"></div>
+        <div id="vitB6DailyIntake" th:text="*{vitaminB6}"></div>
+        <div id="vitCDailyIntake" th:text="*{vitaminC}"></div>
+        <div id="calciumDailyIntake" th:text="*{calcium}"></div>
+        <div id="ironDailyIntake" th:text="*{iron}"></div>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-sm-4">
+
+            <div class="target-section">
+
+                <div class="h5">General</div>
+                <hr/>
+                <div class="row mb-2">
+                    <div class="col-sm-4">Energy</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="energyTarget" class="progress-bar bg-warning" role="progressbar" style="width: 0" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="energyTargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-4">Water</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="waterTarget" class="progress-bar bg-warning" role="progressbar" style="width: 0" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="waterTargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+
+            <div class="target-section">
+                <div class="h5">Macronutrients</div>
+                <hr/>
+                <div class="row mb-2">
+                    <div class="col-sm-4">Carbs</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="carbsTarget" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="carbsTargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-4">Protein</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="proteinTarget" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="proteinTargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-4">Fat</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="fatTarget" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="fatTargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="target-section">
+                <div class="h5">Vitamins</div>
+                <hr/>
+                <div class="row mb-2">
+                    <div class="col-sm-4">Vitamin A</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="vitATarget" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="vitATargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-4 pr-0">Vitamin B6</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="vitB6Target" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="vitB6TargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-4">Vitamin C</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="vitCTarget" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="vitCTargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+
+            <div class="target-section">
+                <div class="h5">Minerals</div>
+                <hr/>
+
+                <div class="row mb-2">
+                    <div class="col-sm-4">Calcium</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="calciumTarget" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="calciumTargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-4">Iron</div>
+                    <div class="col-sm-8 my-auto">
+                        <div class="progress position-relative" style="height: 20px">
+                            <div id="ironTarget" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <p id="ironTargetPercentage" class="justify-content-center d-flex position-absolute w-100">0%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script th:src="@{/scripts/diary.js}"></script>
