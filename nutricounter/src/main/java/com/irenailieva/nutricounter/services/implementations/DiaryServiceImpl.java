@@ -48,10 +48,10 @@ public class DiaryServiceImpl implements DiaryService {
         List<DiaryEntry> diaryEntries = this.diaryEntryRepository.findAllByUserOrderByIdDesc(user);
         List<DiaryEntryServiceModel> diaryEntryServiceModels = new ArrayList<>();
         for (DiaryEntry diaryEntry : diaryEntries) {
-            DiaryEntryServiceModel entry = new DiaryEntryServiceModel();
-            entry.setCompletionPercentage(diaryEntry.getCompletionPercentage());
-            entry.setDate(DateUtil.getDateAsString(diaryEntry.getDate()));
-            diaryEntryServiceModels.add(entry);
+            DiaryEntryServiceModel entryServiceModel = new DiaryEntryServiceModel();
+            entryServiceModel.setCompletionPercentage(diaryEntry.getCompletionPercentage());
+            entryServiceModel.setDate(DateUtil.getDateAsString(diaryEntry.getDate()));
+            diaryEntryServiceModels.add(entryServiceModel);
         }
 
         return diaryEntryServiceModels;

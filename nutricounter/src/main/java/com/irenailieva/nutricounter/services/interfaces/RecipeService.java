@@ -4,9 +4,12 @@ import com.irenailieva.nutricounter.entities.Ingredient;
 import com.irenailieva.nutricounter.entities.Recipe;
 import com.irenailieva.nutricounter.entities.User;
 import com.irenailieva.nutricounter.models.create.RecipeJSONModel;
+import com.irenailieva.nutricounter.models.view.RecipeViewModel;
+
+import java.util.List;
 
 public interface RecipeService {
-    void createNewRecipe(RecipeJSONModel recipeJSONModel, User user);
+    void createNewRecipe(RecipeJSONModel recipeJSONModel, User user, String recipeImageName);
 
     Recipe convertJSONToRecipe(RecipeJSONModel recipeJSONModel);
 
@@ -49,4 +52,8 @@ public interface RecipeService {
         recipe.setCalcium(calcium);
         recipe.setIron(iron);
     }
+
+    List<RecipeViewModel> getUserRecipes(User user);
+
+    void deleteRecipeById(long recipeId);
 }

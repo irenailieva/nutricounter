@@ -21,6 +21,10 @@ public class Ingredient {
     @JoinColumn(name = "edible_id", referencedColumnName = "id")
     private Edible edible;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
+    private Recipe recipe;
+
     @Basic
     private double grams;
 }

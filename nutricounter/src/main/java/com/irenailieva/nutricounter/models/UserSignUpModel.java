@@ -22,6 +22,7 @@ public class UserSignUpModel {
 
     @NotNull
     @NotEmpty(message = WebConstants.EMPTY_USERNAME_MESSAGE)
+    @Pattern(regexp = "[0-9a-zA-Z.]+", message = WebConstants.INVALID_USERNAME_MESSAGE)
     private String username;
 
     @NotNull

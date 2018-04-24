@@ -7,13 +7,16 @@ import com.irenailieva.nutricounter.entities.Recipe;
 import com.irenailieva.nutricounter.entities.User;
 import com.irenailieva.nutricounter.models.create.RecipeJSONModel;
 import com.irenailieva.nutricounter.models.service.FoodEntryModel;
+import com.irenailieva.nutricounter.models.view.RecipeViewModel;
 import com.irenailieva.nutricounter.repositories.RecipeRepository;
 import com.irenailieva.nutricounter.services.interfaces.IngredientService;
 import com.irenailieva.nutricounter.services.interfaces.RecipeService;
+import com.irenailieva.nutricounter.util.UtilModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,11 +34,16 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public void createNewRecipe(RecipeJSONModel recipeJSONModel, User user) {
+    public void createNewRecipe(RecipeJSONModel recipeJSONModel, User user, String recipeImageUrl) {
 
         Recipe recipe = this.convertJSONToRecipe(recipeJSONModel);
         recipe.setUser(user);
+        recipe.setRecipeImageUrl(recipeImageUrl);
+
+        List<Ingredient> ingredientList = recipe.getIngredients();
+        recipe.setIngredients(new ArrayList<>());
         this.recipeRepository.saveAndFlush(recipe);
+        this.ingredientService.saveIngredientList(ingredientList, recipe);
     }
 
     @Override
@@ -53,8 +61,29 @@ public class RecipeServiceImpl implements RecipeService {
 
         List<Ingredient> ingredientList = this.ingredientService.createIngredientList(foodEntryModelList);
         recipe.setIngredients(ingredientList);
+
         this.calculateRecipeNutrients(recipe);
 
         return recipe;
+    }
+
+    @Override
+    public List<RecipeViewModel> getUserRecipes(User user) {
+
+        List<Recipe> recipes = this.recipeRepository.findAllByUser(user);
+        List<RecipeViewModel> recipeViewModels = new ArrayList<>();
+
+        for (Recipe recipe : recipes) {
+            RecipeViewModel recipeViewModel = UtilModelMapper.getInstance().map(recipe, RecipeViewModel.class);
+            recipeViewModel.setIngredients(recipe.getIngredientsAsString());
+            recipeViewModels.add(recipeViewModel);
+        }
+
+        return recipeViewModels;
+    }
+
+    @Override
+    public void deleteRecipeById(long recipeId) {
+        this.recipeRepository.deleteById(recipeId);
     }
 }

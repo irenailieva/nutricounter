@@ -9,6 +9,7 @@ public class WebConstants {
     public static final String INCORRECT_USER_LOGIN_DETAILS = "Incorrect username or password.";
 
     public static final String EMPTY_USERNAME_MESSAGE = "Username cannot be empty.";
+    public static final String INVALID_USERNAME_MESSAGE = "Username can only contain letters, digits and '.'";
     public static final String EMPTY_PASSWORD_MESSAGE = "Password cannot be empty.";
     public static final String EMPTY_CONFIRM_PASSWORD_MESSAGE = "Confirm password cannot be empty.";
 
@@ -29,6 +30,7 @@ public class WebConstants {
 
     //Regex validation
     public static final String VALID_DATE_REGEX = "[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}";
+    public static final String VALID_USERNAME_REGEX = "[0-9a-zA-Z.]+";
     public static final String VALID_HEIGHT_AND_WEIGHT_REGEX = "[0-9]+";
 
     //Roles

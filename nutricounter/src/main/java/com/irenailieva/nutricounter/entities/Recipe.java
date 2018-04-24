@@ -15,15 +15,28 @@ import java.util.List;
 @Setter
 public class Recipe extends Edible {
 
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    private User user;
+    @OneToMany(mappedBy = "recipe", targetEntity = Ingredient.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name = "recipes_ingredients",
+//            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
+    private List<Ingredient> ingredients;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "recipes_ingredients",
-            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
-    List<Ingredient> ingredients;
+    @Basic
+    private String recipeImageUrl;
 
+    public String getIngredientsAsString() {
+        StringBuilder builder = new StringBuilder();
 
+        for (int i = 0; i < ingredients.size(); i++) {
+            builder.append(ingredients.get(i).getEdible().getName())
+                    .append(" - ")
+                    .append(ingredients.get(i).getGrams())
+                    .append("g");
+
+            if (i < ingredients.size() - 1) {
+                builder.append(System.lineSeparator());
+            }
+        }
+        return builder.toString();
+    }
 }

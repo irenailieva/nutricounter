@@ -5,8 +5,22 @@
     <div class="row justify-content-center mt-3" style="height: 500px">
         <div class="col-sm-5">
 
-            <form onsubmit="return validateRecipeCreateForm()" id="recipeCreateForm" action="/recipes/add" method="post">
-                <button onclick="appendCreateRecipeDetails()" type="submit" class="btn btn-lg btn-block btn-dark mb-3">Create Recipe</button>
+            <form onsubmit="return validateRecipeCreateForm()" id="recipeCreateForm" enctype="multipart/form-data" action="/recipes/add" method="POST">
+
+                <div class="row">
+                    <button onclick="appendCreateRecipeDetails()" type="submit" class="col-sm-6 btn btn-lg btn-block btn-dark mb-3">Create Recipe</button>
+
+                    <div class="form-group col-sm-6">
+                        <div class="row justify-content-center">
+                            <label for="recipePhotoUpload">Upload Recipe Photo</label>
+                        </div>
+                        <div class="row">
+                            <input type="file" class="form-control" name="file" id="recipePhotoUpload">
+                        </div>
+                    </div>
+                </div>
+
+
 
                 <div th:object="${recipeJSONModel}">
                 <input id="recipeName" name="recipeName" type="text" class="form-control mb-2"
