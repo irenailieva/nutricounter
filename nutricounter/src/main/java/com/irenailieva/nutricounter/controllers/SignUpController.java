@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -32,7 +33,7 @@ public class SignUpController extends BaseController {
 
     @PostMapping("/sign-up")
     @PreAuthorize("isAnonymous()")
-    public ModelAndView signUpConfirm(@Valid UserSignUpModel userSignUpModel, BindingResult bindingResult) {
+    public ModelAndView signUpConfirm(@Valid UserSignUpModel userSignUpModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()
                 || !this.userSignUpService.validUserSignUpDetails(userSignUpModel, bindingResult)) {
@@ -40,6 +41,7 @@ public class SignUpController extends BaseController {
         }
 
         this.userSignUpService.createUser(userSignUpModel);
+        redirectAttributes.addFlashAttribute("displaySignUpSuccessAlert", true);
         return super.redirect("/login");
     }
 }

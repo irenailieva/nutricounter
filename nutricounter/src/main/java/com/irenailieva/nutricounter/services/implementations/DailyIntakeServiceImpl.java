@@ -6,11 +6,7 @@ import com.irenailieva.nutricounter.repositories.DailyIntakeRepository;
 import com.irenailieva.nutricounter.services.interfaces.DailyIntakeService;
 import com.irenailieva.nutricounter.util.DailyIntakeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.Future;
 
 @Service
 public class DailyIntakeServiceImpl implements DailyIntakeService {
@@ -22,14 +18,13 @@ public class DailyIntakeServiceImpl implements DailyIntakeService {
         this.dailyIntakeRepository = dailyIntakeRepository;
     }
 
-    @Async
     @Override
-    public Future<DailyIntake> createDailyIntakeFor(User user) {
+    public DailyIntake createDailyIntakeFor(User user) {
         DailyIntake dailyIntake = new DailyIntake();
         dailyIntake.setUser(user);
         DailyIntakeCalculator.setDailyIntakeValues(user, dailyIntake);
         this.dailyIntakeRepository.saveAndFlush(dailyIntake);
-        return new AsyncResult<>(dailyIntake);
+        return dailyIntake;
     }
 
     @Override

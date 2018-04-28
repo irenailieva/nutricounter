@@ -101,6 +101,7 @@ public class UserSignUpServiceImpl implements UserSignUpService {
 
         this.userRepository.saveAndFlush(user);
         this.dailyIntakeService.createDailyIntakeFor(user);
+
         return user;
     }
 
