@@ -2,7 +2,7 @@ package com.irenailieva.nutricounter.services.implementations;
 
 import com.irenailieva.nutricounter.entities.DiaryEntry;
 import com.irenailieva.nutricounter.entities.User;
-import com.irenailieva.nutricounter.models.service.DiaryEntryServiceModel;
+import com.irenailieva.nutricounter.models.view.DiaryEntryViewModel;
 import com.irenailieva.nutricounter.repositories.DiaryEntryRepository;
 import com.irenailieva.nutricounter.services.interfaces.DiaryService;
 import com.irenailieva.nutricounter.services.interfaces.UserService;
@@ -29,7 +29,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public void addDiaryEntry(int completionPercentage, String username) {
+    public DiaryEntry addDiaryEntry(int completionPercentage, String username) {
 
         User user = this.userService.findByUsername(username);
 
@@ -39,21 +39,23 @@ public class DiaryServiceImpl implements DiaryService {
         newDiaryEntry.setCompletionPercentage(completionPercentage);
 
         this.diaryEntryRepository.saveAndFlush(newDiaryEntry);
+
+        return newDiaryEntry;
     }
 
     @Override
-    public List<DiaryEntryServiceModel> getDiaryHistory(String username) {
+    public List<DiaryEntryViewModel> getDiaryHistory(String username) {
 
         User user = this.userService.findByUsername(username);
         List<DiaryEntry> diaryEntries = this.diaryEntryRepository.findAllByUserOrderByIdDesc(user);
-        List<DiaryEntryServiceModel> diaryEntryServiceModels = new ArrayList<>();
+        List<DiaryEntryViewModel> diaryEntryViewModels = new ArrayList<>();
         for (DiaryEntry diaryEntry : diaryEntries) {
-            DiaryEntryServiceModel entryServiceModel = new DiaryEntryServiceModel();
-            entryServiceModel.setCompletionPercentage(diaryEntry.getCompletionPercentage());
-            entryServiceModel.setDate(DateUtil.getDateAsString(diaryEntry.getDate()));
-            diaryEntryServiceModels.add(entryServiceModel);
+            DiaryEntryViewModel entryViewModel = new DiaryEntryViewModel();
+            entryViewModel.setCompletionPercentage(diaryEntry.getCompletionPercentage());
+            entryViewModel.setDate(DateUtil.getDateAsString(diaryEntry.getDate()));
+            diaryEntryViewModels.add(entryViewModel);
         }
 
-        return diaryEntryServiceModels;
+        return diaryEntryViewModels;
     }
 }

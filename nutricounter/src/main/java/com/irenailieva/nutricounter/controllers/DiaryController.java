@@ -3,7 +3,7 @@ package com.irenailieva.nutricounter.controllers;
 import com.irenailieva.nutricounter.controllers.base.BaseController;
 import com.irenailieva.nutricounter.entities.DailyIntake;
 import com.irenailieva.nutricounter.entities.User;
-import com.irenailieva.nutricounter.models.service.DiaryEntryServiceModel;
+import com.irenailieva.nutricounter.models.view.DiaryEntryViewModel;
 import com.irenailieva.nutricounter.services.interfaces.DailyIntakeService;
 import com.irenailieva.nutricounter.services.interfaces.DiaryService;
 import com.irenailieva.nutricounter.services.interfaces.UserService;
@@ -54,7 +54,7 @@ public class DiaryController extends BaseController {
     @GetMapping("/history")
     @PreAuthorize("isAuthenticated()")
     public ModelAndView getDiaryHistory(Principal principal) {
-        List<DiaryEntryServiceModel> diaryEntryHistory = this.diaryService.getDiaryHistory(principal.getName());
+        List<DiaryEntryViewModel> diaryEntryHistory = this.diaryService.getDiaryHistory(principal.getName());
         return super.view("users/diary-history", "diaryEntryHistory", diaryEntryHistory);
     }
 

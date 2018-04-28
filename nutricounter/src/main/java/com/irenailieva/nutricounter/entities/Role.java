@@ -26,4 +26,12 @@ public class Role {
     public Role() {
         this.users = new HashSet<>();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!obj.getClass().equals(Role.class)) {
+            return false;
+        }
+        return this.getName().equals(((Role) obj).getName());
+    }
 }

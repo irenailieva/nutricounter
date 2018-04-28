@@ -9,7 +9,7 @@ import com.irenailieva.nutricounter.models.view.RecipeViewModel;
 import java.util.List;
 
 public interface RecipeService {
-    void createNewRecipe(RecipeJSONModel recipeJSONModel, User user, String recipeImageName);
+    Recipe createNewRecipe(RecipeJSONModel recipeJSONModel, User user, String recipeImageName);
 
     Recipe convertJSONToRecipe(RecipeJSONModel recipeJSONModel);
 

@@ -2,12 +2,10 @@ package com.irenailieva.nutricounter.models.create;
 
 import com.irenailieva.nutricounter.util.WebConstants;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor
 @Getter
 public class FoodCreateModel {
 
@@ -77,5 +75,18 @@ public class FoodCreateModel {
 
     public void setIron(double iron) {
         this.iron = iron < 0 ? 0 : iron;
+    }
+
+    public FoodCreateModel() {
+        this.energy = 0;
+        this.water = 0;
+        this.carbohydrates = 0;
+        this.fat = 0;
+        this.protein = 0;
+        this.vitaminA = 0;
+        this.vitaminB6 = 0;
+        this.vitaminC = 0;
+        this.calcium = 0;
+        this.iron = 0;
     }
 }

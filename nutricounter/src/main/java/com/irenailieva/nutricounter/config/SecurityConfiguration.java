@@ -1,6 +1,6 @@
 package com.irenailieva.nutricounter.config;
 
-import com.irenailieva.nutricounter.security.MyAuthenticationSuccessHandler;
+import com.irenailieva.nutricounter.security.NutricounterAuthenticationSuccessHandler;
 import com.irenailieva.nutricounter.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +14,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String[] PERMITTED_ROUTES = {"/", "/login", "/sign-up", "/styles/**", "/scripts/**", "/images/**"};
 
-    private final MyAuthenticationSuccessHandler authenticationSuccessHandler;
+    private final NutricounterAuthenticationSuccessHandler authenticationSuccessHandler;
 
     private final UserService userService;
 
     @Autowired
-    public SecurityConfiguration(MyAuthenticationSuccessHandler authenticationSuccessHandler, UserService userService) {
+    public SecurityConfiguration(NutricounterAuthenticationSuccessHandler authenticationSuccessHandler, UserService userService) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.userService = userService;
     }

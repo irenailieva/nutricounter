@@ -1,7 +1,7 @@
 package com.irenailieva.nutricounter.controllers;
 
 import com.irenailieva.nutricounter.controllers.base.BaseController;
-import com.irenailieva.nutricounter.models.UserSignUpModel;
+import com.irenailieva.nutricounter.models.service.UserSignUpModel;
 import com.irenailieva.nutricounter.services.interfaces.UserSignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

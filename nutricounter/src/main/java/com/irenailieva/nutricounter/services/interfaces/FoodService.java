@@ -1,8 +1,10 @@
 package com.irenailieva.nutricounter.services.interfaces;
 
-import com.irenailieva.nutricounter.entities.*;
+import com.irenailieva.nutricounter.entities.CustomFood;
+import com.irenailieva.nutricounter.entities.Edible;
+import com.irenailieva.nutricounter.entities.GlobalFood;
+import com.irenailieva.nutricounter.entities.User;
 import com.irenailieva.nutricounter.models.create.FoodCreateModel;
-import com.irenailieva.nutricounter.models.create.RecipeJSONModel;
 import com.irenailieva.nutricounter.models.view.UserViewModel;
 
 import java.util.List;
@@ -12,12 +14,12 @@ public interface FoodService {
 
     List<Edible> findFirst10Foods(String username);
 
-    List<CustomFood> findAllUserCustomFoods(String username);
     List<Edible> findFoodsByUserAndName(String username, String foodName);
 
-    void createGlobalFood(FoodCreateModel foodCreateModel, String username);
-    void createCustomFood(FoodCreateModel foodCreateModel, String username);
-    void createRecipe(RecipeJSONModel recipeJSONModel, String username);
+    GlobalFood createGlobalFood(FoodCreateModel foodCreateModel, String username);
+    CustomFood createCustomFood(FoodCreateModel foodCreateModel, String username);
 
     void setFoodCount(UserViewModel userViewModel, User user);
+
+    long countAllFoods();
 }

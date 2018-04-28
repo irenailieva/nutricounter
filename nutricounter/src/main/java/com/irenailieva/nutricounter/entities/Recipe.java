@@ -1,5 +1,6 @@
 package com.irenailieva.nutricounter.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,9 +17,7 @@ import java.util.List;
 public class Recipe extends Edible {
 
     @OneToMany(mappedBy = "recipe", targetEntity = Ingredient.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(name = "recipes_ingredients",
-//            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
+    @JsonIgnore
     private List<Ingredient> ingredients;
 
     @Basic

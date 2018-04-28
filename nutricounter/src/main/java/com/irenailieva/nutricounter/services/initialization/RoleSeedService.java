@@ -22,7 +22,7 @@ public class RoleSeedService {
     }
 
     @EventListener
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    public List<Role> onApplicationEvent(ContextRefreshedEvent event) {
 
         List<Role> allRoles = this.roleService.findAllRoles();
 
@@ -31,5 +31,7 @@ public class RoleSeedService {
                 this.roleService.createNewRole(roleName);
             }
         }
+
+        return this.roleService.findAllRoles();
     }
 }

@@ -34,7 +34,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public void createNewRecipe(RecipeJSONModel recipeJSONModel, User user, String recipeImageUrl) {
+    public Recipe createNewRecipe(RecipeJSONModel recipeJSONModel, User user, String recipeImageUrl) {
 
         Recipe recipe = this.convertJSONToRecipe(recipeJSONModel);
         recipe.setUser(user);
@@ -44,6 +44,8 @@ public class RecipeServiceImpl implements RecipeService {
         recipe.setIngredients(new ArrayList<>());
         this.recipeRepository.saveAndFlush(recipe);
         this.ingredientService.saveIngredientList(ingredientList, recipe);
+
+        return recipe;
     }
 
     @Override

@@ -59,6 +59,10 @@ public class DateUtil {
         return builder.toString();
     }
 
+    public static String getLocalDateAsString(LocalDate date) {
+        return date.getYear() + "-" + date.getMonthValue() + "-" + date.getDayOfMonth();
+    }
+
     private static void setTimeToZero(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);

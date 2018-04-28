@@ -1,5 +1,6 @@
 package com.irenailieva.nutricounter.util;
 
+import com.irenailieva.nutricounter.entities.DailyIntake;
 import com.irenailieva.nutricounter.entities.User;
 
 import java.util.Calendar;
@@ -18,7 +19,20 @@ public class DailyIntakeCalculator {
     private static final double VIT_B6_DAILY_INTAKE = 1.3;
     private static final double VIT_C_DAILY_INTAKE = 75;
 
-    public static double calculateEnergy(User user) {
+    public static void setDailyIntakeValues(User user, DailyIntake dailyIntake) {
+        dailyIntake.setEnergy(calculateEnergy(user));
+        dailyIntake.setWater(calculateWater(user));
+        dailyIntake.setCarbohydrates(calculateCarbs(dailyIntake.getEnergy()));
+        dailyIntake.setFat(calculateFat(dailyIntake.getEnergy()));
+        dailyIntake.setProtein(calculateProtein(user));
+        dailyIntake.setVitaminA(calculateVitaminA());
+        dailyIntake.setVitaminB6(calculateVitaminB6());
+        dailyIntake.setVitaminC(calculateVitaminC());
+        dailyIntake.setIron(calculateIron(user));
+        dailyIntake.setCalcium(calculateCalcium(user));
+    }
+
+    private static double calculateEnergy(User user) {
         double energy = 0.0;
 
         int userAge = Calendar.getInstance().get(Calendar.YEAR) - user.getDateOfBirth().getYear();
@@ -34,38 +48,38 @@ public class DailyIntakeCalculator {
         return energy * LIGHT_EXERCISE_MULTIPLIER;
     }
 
-    public static double calculateWater(User user) {
+    private static double calculateWater(User user) {
         switch(user.getGender()) {
             case FEMALE: return FEMALE_DAILY_WATER_INTAKE;
             default: return MALE_DAILY_WATER_INTAKE;
         }
     }
 
-    public static double calculateCarbs(double energy) {
+    private static double calculateCarbs(double energy) {
         return energy * 70.0 / 100.0 / 4;
     }
 
-    public static double calculateFat(double energy) {
+    private static double calculateFat(double energy) {
         return energy * 15.0 / 100.0 / 9;
     }
 
-    public static double calculateProtein(User user) {
+    private static double calculateProtein(User user) {
         return user.getWeight() * 0.8;
     }
 
-    public static double calculateVitaminA() {
+    private static double calculateVitaminA() {
         return VIT_A_DAILY_INTAKE;
     }
 
-    public static double calculateVitaminB6() {
+    private static double calculateVitaminB6() {
         return VIT_B6_DAILY_INTAKE;
     }
 
-    public static double calculateVitaminC() {
+    private static double calculateVitaminC() {
         return VIT_C_DAILY_INTAKE;
     }
 
-    public static double calculateCalcium(User user) {
+    private static double calculateCalcium(User user) {
         int userAge = Calendar.getInstance().get(Calendar.YEAR) - user.getDateOfBirth().getYear();
         if (userAge <= 3) {
             return 700;
@@ -84,7 +98,7 @@ public class DailyIntakeCalculator {
         }
     }
 
-    public static double calculateIron(User user) {
+    private static double calculateIron(User user) {
         int userAge = Calendar.getInstance().get(Calendar.YEAR) - user.getDateOfBirth().getYear();
         if (userAge <= 3) {
             return 7;

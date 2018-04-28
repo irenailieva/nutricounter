@@ -2,7 +2,6 @@ package com.irenailieva.nutricounter.services.implementations;
 
 import com.irenailieva.nutricounter.entities.*;
 import com.irenailieva.nutricounter.models.create.FoodCreateModel;
-import com.irenailieva.nutricounter.models.create.RecipeJSONModel;
 import com.irenailieva.nutricounter.models.view.UserViewModel;
 import com.irenailieva.nutricounter.repositories.CustomFoodRepository;
 import com.irenailieva.nutricounter.repositories.EdibleRepository;
@@ -36,22 +35,24 @@ public class FoodServiceImpl implements FoodService {
         this.userService = userService;
     }
 
-    public void createGlobalFood(FoodCreateModel foodCreateModel, String username) {
+    @Override
+    public GlobalFood createGlobalFood(FoodCreateModel foodCreateModel, String username) {
         GlobalFood globalFood = UtilModelMapper.getInstance().map(foodCreateModel, GlobalFood.class);
         User user = this.userService.findByUsername(username);
         globalFood.setUser(user);
         this.edibleRepository.saveAndFlush(globalFood);
+
+        return globalFood;
     }
 
-    public void createCustomFood(FoodCreateModel foodCreateModel, String username) {
+    @Override
+    public CustomFood createCustomFood(FoodCreateModel foodCreateModel, String username) {
         CustomFood customFood = UtilModelMapper.getInstance().map(foodCreateModel, CustomFood.class);
         User user = this.userService.findByUsername(username);
         customFood.setUser(user);
         this.edibleRepository.saveAndFlush(customFood);
-    }
 
-    public void createRecipe(RecipeJSONModel recipeJSONModel, String username) {
-
+        return customFood;
     }
 
     @Override
@@ -88,17 +89,11 @@ public class FoodServiceImpl implements FoodService {
         foodSearchResult.addAll(customFoodsByNameAndUser);
         foodSearchResult.addAll(recipesByNameAndUser);
 
-        if (foodSearchResult.size() < 20) {
+        if (foodSearchResult.size() < 10) {
             return foodSearchResult;
         }
 
-        return foodSearchResult.subList(0, 20);
-    }
-
-    @Override
-    public List<CustomFood> findAllUserCustomFoods(String username) {
-        User user = this.userService.findByUsername(username);
-        return this.customFoodRepository.findAllByUser(user);
+        return foodSearchResult.subList(0, 10);
     }
 
     @Override
@@ -106,5 +101,10 @@ public class FoodServiceImpl implements FoodService {
         userViewModel.setCustomFoodCount(this.customFoodRepository.countAllByUser(user));
         userViewModel.setGlobalFoodCount(this.globalFoodRepository.countAllByUser(user));
         userViewModel.setRecipeCount(this.recipeRepository.countAllByUser(user));
+    }
+
+    @Override
+    public long countAllFoods() {
+        return this.edibleRepository.count();
     }
 }

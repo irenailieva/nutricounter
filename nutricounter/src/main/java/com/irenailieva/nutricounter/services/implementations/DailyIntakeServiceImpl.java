@@ -6,7 +6,11 @@ import com.irenailieva.nutricounter.repositories.DailyIntakeRepository;
 import com.irenailieva.nutricounter.services.interfaces.DailyIntakeService;
 import com.irenailieva.nutricounter.util.DailyIntakeCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.Future;
 
 @Service
 public class DailyIntakeServiceImpl implements DailyIntakeService {
@@ -18,30 +22,23 @@ public class DailyIntakeServiceImpl implements DailyIntakeService {
         this.dailyIntakeRepository = dailyIntakeRepository;
     }
 
+    @Async
     @Override
-    public void createDailyIntakeFor(User user) {
+    public Future<DailyIntake> createDailyIntakeFor(User user) {
         DailyIntake dailyIntake = new DailyIntake();
         dailyIntake.setUser(user);
-        this.setDailyValues(dailyIntake, user);
+        DailyIntakeCalculator.setDailyIntakeValues(user, dailyIntake);
         this.dailyIntakeRepository.saveAndFlush(dailyIntake);
-    }
-
-    private void setDailyValues(DailyIntake dailyIntake, User user) {
-
-        dailyIntake.setEnergy(DailyIntakeCalculator.calculateEnergy(user));
-        dailyIntake.setWater(DailyIntakeCalculator.calculateWater(user));
-        dailyIntake.setCarbohydrates(DailyIntakeCalculator.calculateCarbs(dailyIntake.getEnergy()));
-        dailyIntake.setFat(DailyIntakeCalculator.calculateFat(dailyIntake.getEnergy()));
-        dailyIntake.setProtein(DailyIntakeCalculator.calculateProtein(user));
-        dailyIntake.setVitaminA(DailyIntakeCalculator.calculateVitaminA());
-        dailyIntake.setVitaminB6(DailyIntakeCalculator.calculateVitaminB6());
-        dailyIntake.setVitaminC(DailyIntakeCalculator.calculateVitaminC());
-        dailyIntake.setIron(DailyIntakeCalculator.calculateIron(user));
-        dailyIntake.setCalcium(DailyIntakeCalculator.calculateCalcium(user));
+        return new AsyncResult<>(dailyIntake);
     }
 
     @Override
     public DailyIntake findIntakeByUser(User user) {
         return this.dailyIntakeRepository.findByUserId(user.getId());
+    }
+
+    @Override
+    public void saveDailyIntake(DailyIntake dailyIntake) {
+        this.dailyIntakeRepository.saveAndFlush(dailyIntake);
     }
 }

@@ -9,7 +9,5 @@ public interface RoleService {
 
     Role findByName(String roleName);
 
-    void createNewRole(String roleName);
-
-    void deleteRole(String chiefAdminRoleName);
+    Role createNewRole(String roleName);
 }

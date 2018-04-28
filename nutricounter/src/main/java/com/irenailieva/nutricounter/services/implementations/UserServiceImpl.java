@@ -1,13 +1,16 @@
 package com.irenailieva.nutricounter.services.implementations;
 
+import com.irenailieva.nutricounter.entities.DailyIntake;
 import com.irenailieva.nutricounter.entities.Gender;
 import com.irenailieva.nutricounter.entities.Role;
 import com.irenailieva.nutricounter.entities.User;
 import com.irenailieva.nutricounter.models.view.ProfileEditModel;
 import com.irenailieva.nutricounter.models.view.UserViewModel;
 import com.irenailieva.nutricounter.repositories.UserRepository;
+import com.irenailieva.nutricounter.services.interfaces.DailyIntakeService;
 import com.irenailieva.nutricounter.services.interfaces.RoleService;
 import com.irenailieva.nutricounter.services.interfaces.UserService;
+import com.irenailieva.nutricounter.util.DailyIntakeCalculator;
 import com.irenailieva.nutricounter.util.DateUtil;
 import com.irenailieva.nutricounter.util.UtilModelMapper;
 import com.irenailieva.nutricounter.util.WebConstants;
@@ -25,14 +28,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private RoleService roleService;
+    private final RoleService roleService;
+    private final DailyIntakeService dailyIntakeService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, DailyIntakeService dailyIntakeService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.dailyIntakeService = dailyIntakeService;
     }
 
     @Override
@@ -87,7 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editProfile(String username, ProfileEditModel profileEditModel) {
+    public User editProfile(String username, ProfileEditModel profileEditModel) {
         User user = this.userRepository.findFirstByUsername(username);
 
         user.setGender(Gender.getEnumValue(profileEditModel.getGender()));
@@ -95,7 +100,12 @@ public class UserServiceImpl implements UserService {
         user.setHeight(Integer.parseInt(profileEditModel.getHeight()));
         user.setWeight(Integer.parseInt(profileEditModel.getWeight()));
 
+        DailyIntake editedDailyIntake = this.dailyIntakeService.findIntakeByUser(user);
+        DailyIntakeCalculator.setDailyIntakeValues(user, editedDailyIntake);
+        this.dailyIntakeService.saveDailyIntake(editedDailyIntake);
+
         this.userRepository.saveAndFlush(user);
+        return user;
     }
 
     @Override
@@ -106,20 +116,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void grantAdminPrivileges(UserViewModel userViewModel) {
+    public User grantAdminPrivileges(UserViewModel userViewModel) {
         Role adminRole = this.roleService.findByName(WebConstants.ADMIN_ROLE);
+
         User user = this.userRepository.findFirstByUsername(userViewModel.getUsername());
-        user.addRole(adminRole);
-        this.userRepository.saveAndFlush(user);
+        if (!user.getRoles().contains(roleService.findByName(WebConstants.ADMIN_ROLE))) {
+            user.addRole(adminRole);
+            this.userRepository.saveAndFlush(user);
+        }
         userViewModel.getRoles().add(WebConstants.ADMIN_ROLE);
+
+        return user;
     }
 
     @Override
-    public void revokeAdminPrivileges(UserViewModel userViewModel) {
+    public User revokeAdminPrivileges(UserViewModel userViewModel) {
         Role adminRole = this.roleService.findByName(WebConstants.ADMIN_ROLE);
         User user = this.userRepository.findFirstByUsername(userViewModel.getUsername());
         user.removeRole(adminRole);
         this.userRepository.saveAndFlush(user);
         userViewModel.getRoles().remove(WebConstants.ADMIN_ROLE);
+
+        return user;
+    }
+
+    @Override
+    public long countAllUsers() {
+        return this.userRepository.count();
     }
 }

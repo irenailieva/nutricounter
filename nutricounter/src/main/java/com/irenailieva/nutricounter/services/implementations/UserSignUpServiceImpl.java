@@ -3,7 +3,7 @@ package com.irenailieva.nutricounter.services.implementations;
 import com.irenailieva.nutricounter.entities.Gender;
 import com.irenailieva.nutricounter.entities.Role;
 import com.irenailieva.nutricounter.entities.User;
-import com.irenailieva.nutricounter.models.UserSignUpModel;
+import com.irenailieva.nutricounter.models.service.UserSignUpModel;
 import com.irenailieva.nutricounter.repositories.UserRepository;
 import com.irenailieva.nutricounter.services.interfaces.DailyIntakeService;
 import com.irenailieva.nutricounter.services.interfaces.RoleService;
@@ -91,7 +91,7 @@ public class UserSignUpServiceImpl implements UserSignUpService {
     }
 
     @Override
-    public void createUser(UserSignUpModel userSignUpModel) {
+    public User createUser(UserSignUpModel userSignUpModel) {
 
         User user = UtilModelMapper.getInstance().map(userSignUpModel, User.class);
         user.setPassword(this.passwordEncoder.encode(userSignUpModel.getPassword()));
@@ -101,10 +101,11 @@ public class UserSignUpServiceImpl implements UserSignUpService {
 
         this.userRepository.saveAndFlush(user);
         this.dailyIntakeService.createDailyIntakeFor(user);
+        return user;
     }
 
     @Override
-    public void setUserRoles(User user) {
+    public User setUserRoles(User user) {
 
         long userCount = this.userRepository.count();
 
@@ -116,6 +117,8 @@ public class UserSignUpServiceImpl implements UserSignUpService {
         }
         Role role = this.roleService.findByName(WebConstants.USER_ROLE);
         user.addRole(role);
+
+        return user;
     }
 
     @Override

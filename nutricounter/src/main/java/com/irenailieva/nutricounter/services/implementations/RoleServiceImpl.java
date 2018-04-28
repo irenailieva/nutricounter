@@ -31,17 +31,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void createNewRole(String roleName) {
+    public Role createNewRole(String roleName) {
         Role role = new Role();
         role.setName(roleName);
-        this.roleRepository.saveAndFlush(role);
-    }
-
-    @Override
-    public void deleteRole(String roleName) {
-        Role foundRole = this.roleRepository.findFirstByName(roleName);
-        if (foundRole != null) {
-            this.roleRepository.delete(foundRole);
-        }
+        return this.roleRepository.saveAndFlush(role);
     }
 }

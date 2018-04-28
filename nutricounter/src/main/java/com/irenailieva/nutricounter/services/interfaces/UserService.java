@@ -16,11 +16,13 @@ public interface UserService extends UserDetailsService {
 
     List<String> findUsernames(String username);
 
-    void editProfile(String username, ProfileEditModel profileEditModel);
+    User editProfile(String username, ProfileEditModel profileEditModel);
 
     boolean userIsAdmin(String username);
 
-    void grantAdminPrivileges(UserViewModel userViewModel);
+    User grantAdminPrivileges(UserViewModel userViewModel);
 
-    void revokeAdminPrivileges(UserViewModel userViewModel);
+    User revokeAdminPrivileges(UserViewModel userViewModel);
+
+    long countAllUsers();
 }

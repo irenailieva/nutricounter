@@ -1,7 +1,6 @@
 package com.irenailieva.nutricounter.controllers;
 
 import com.irenailieva.nutricounter.controllers.base.BaseController;
-import com.irenailieva.nutricounter.entities.CustomFood;
 import com.irenailieva.nutricounter.entities.Edible;
 import com.irenailieva.nutricounter.models.create.FoodCreateModel;
 import com.irenailieva.nutricounter.services.interfaces.FoodService;
@@ -60,13 +59,6 @@ public class FoodController extends BaseController {
         this.foodService.createGlobalFood(foodCreateModel, principal.getName());
         redirectAttributes.addFlashAttribute("displayGlobalFoodCreateSuccess", true);
         return super.redirect("/diary");
-    }
-
-    @GetMapping("/custom/{username}")
-    public ModelAndView userCustomFoods(@PathVariable String username) {
-        List<CustomFood> userCustomFoods = this.foodService.findAllUserCustomFoods(username);
-        return super.view("foods/custom-foods")
-                .addObject("userCustomFoods", userCustomFoods);
     }
 
     @GetMapping("/first10")
